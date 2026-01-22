@@ -1,0 +1,7 @@
+{
+  "name": "Linkify",
+  "description": "A modern, minimal Link-in-bio platform designed specifically for Telegram, allowing users to aggregate and share their digital presence effortlessly.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
