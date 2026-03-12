@@ -36,14 +36,19 @@ const App: React.FC = () => {
   const [initData, setInitData] = useState<string>('');
 
   useEffect(() => {
-    // @ts-ignore
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      setInitData(tg.initData || 'No initData available (Try opening in Telegram)');
-    } else {
-      setInitData('Not running in Telegram WebApp');
+    try {
+      // @ts-ignore
+      const tg = window?.Telegram?.WebApp;
+      if (tg) {
+        if (typeof tg.ready === 'function') tg.ready();
+        if (typeof tg.expand === 'function') tg.expand();
+        setInitData(tg.initData || 'No initData available (Try opening in Telegram)');
+      } else {
+        setInitData('Not running in Telegram WebApp');
+      }
+    } catch (error) {
+      console.error('Error initializing Telegram WebApp:', error);
+      setInitData('Error loading Telegram SDK');
     }
   }, []);
 
