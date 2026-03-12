@@ -33,6 +33,19 @@ const App: React.FC = () => {
   const [view, setView] = useState<AppView>('public');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<Link | null>(null);
+  const [initData, setInitData] = useState<string>('');
+
+  useEffect(() => {
+    // @ts-ignore
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      setInitData(tg.initData || 'No initData available (Try opening in Telegram)');
+    } else {
+      setInitData('Not running in Telegram WebApp');
+    }
+  }, []);
 
   // Profile Form State
   const [tempDisplayName, setTempDisplayName] = useState(profile.displayName);
@@ -123,7 +136,17 @@ const App: React.FC = () => {
             </div>
           </main>
 
-          <footer className="p-6 text-center">
+          <footer className="p-6 text-center space-y-4">
+            {initData && (
+              <div className="mt-4 p-4 bg-slate-100 rounded-xl overflow-hidden text-left">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Telegram Init Data</p>
+                <div className="max-h-32 overflow-y-auto">
+                  <code className="text-[10px] text-slate-600 break-all whitespace-pre-wrap">
+                    {initData}
+                  </code>
+                </div>
+              </div>
+            )}
             <p className="text-xs text-slate-300 font-medium tracking-widest uppercase">
               Powered by Linkify
             </p>
